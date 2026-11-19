@@ -1,0 +1,42 @@
+:root {
+  /* Surface colors */
+  --bg-primary: #05080F;
+  --bg-panel: #0B1220;
+  --bg-panel-subtle: #0F182B;
+  --border-subtle: #1E2A44;
+  --border-active: #2E4168;
+
+  /* Typography */
+  --text-main: #E6EDF7;
+  --text-muted: #9DB0CF;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Accent brand */
+  --accent-cyan: #38E8D0;
+  --accent-cyan-hover: #2CC2AD;
+  --accent-glow: rgba(56, 232, 208, 0.25);
+
+  /* Topic markers */
+  --topic-calamity: #FF6B6B;
+  --topic-fire: #FFB454;
+  --topic-storm: #5BC0FF;
+  --topic-wildlife: #7CE38B;
+  --topic-sports: #A78BFA;
+  --topic-news: #38E8D0;
+  --topic-entertainment: #F472B6;
+
+  /* Radius & Motion */
+  --radius-card: 14px;
+  --radius-panel: 16px;
+  --radius-chip: 9999px;
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 250ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

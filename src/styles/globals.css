@@ -1,0 +1,46 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    overflow-x: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Custom scrollbars for dark futuristic telemetry style */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B1220;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1E2A44;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2E4168;
+  }
+}
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow: 0 0 16px rgba(56, 232, 208, 0.3);
+  }
+  .glow-calamity {
+    box-shadow: 0 0 14px rgba(255, 107, 107, 0.35);
+  }
+  .glass-panel {
+    background: rgba(11, 18, 32, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid #1E2A44;
+  }
+}

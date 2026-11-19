@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.npm/
+.pnp
+.pnp.js
+
+# Testing and coverage
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Production build artifacts
+dist/
+build/
+out/
+
+# Environment files (never commit secrets)
+.env
+.env.local
+.env.*.local
+*.local
+
+# System and editor files
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea/
+.vscode/
+*.log
+
+# Temp & caches
+.turbo/
+.cache/
+.vite/
+.eslintcache
+.temp/
+uploads/
+info/

@@ -1,0 +1,41 @@
+{
+  "updatedAt": "2026-11-14T12:00:00.000Z",
+  "articles": [
+    {
+      "id": "news-art-1",
+      "topic": "calamities",
+      "headline": "Pacific Tsunami Warning Center: Regional Seismicity Assessment Normal",
+      "source": "USGS / PTWC",
+      "url": "https://earthquake.usgs.gov",
+      "publishedAt": "2026-11-14T11:30:00.000Z",
+      "summary": "Deep seismic networks report baseline dissipation following the offshore Chiba tremor; oceanic sensors register sub-centimeter sea-surface variations."
+    },
+    {
+      "id": "news-art-2",
+      "topic": "wildlife",
+      "headline": "Bioacoustic Tracking Confirms Rebounding Blue Whale Populations in North Atlantic",
+      "source": "Global Marine Ecology",
+      "url": "https://marineecology.org",
+      "publishedAt": "2026-11-14T10:15:00.000Z",
+      "summary": "Hydrophone arrays positioned along the Mid-Atlantic Ridge identify three distinct vocalization clans migrating northward toward feeding grounds."
+    },
+    {
+      "id": "news-art-3",
+      "topic": "sports",
+      "headline": "Global Sailing Circuit: Foiling Monohulls Redefine Speed Thresholds in Trans-Tasman Sprint",
+      "source": "Ocean Racing Weekly",
+      "url": "https://oceanracing.example.com",
+      "publishedAt": "2026-11-14T09:00:00.000Z",
+      "summary": "Skippers capitalize on steady 25-knot trade winds, shaving four hours off the longstanding passage benchmark."
+    },
+    {
+      "id": "news-art-4",
+      "topic": "news",
+      "headline": "World Monitor Brief: Critical Mineral Supply Chains Rebalance Amid Recycled Output Gains",
+      "source": "World Monitor Intelligence",
+      "url": "https://worldmonitor.app",
+      "publishedAt": "2026-11-14T08:30:00.000Z",
+      "summary": "Secondary processing facilities in North America and Europe contribute record volume to lithium-ion cell feedstock demand."
+    }
+  ]
+}
