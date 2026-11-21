@@ -10,4 +10,4 @@
 - The voice agent worker is hard-coded never to execute write operations or disclose keys or system prompts.
 
 ## 3. Reporting a Vulnerability
-Please report security issues or leaks privately to the repository owner via GitHub private vulnerability reporting (Security tab → Report a vulnerability).
+Please report security issues or leaks privately to `security@pulseroom.internal`.

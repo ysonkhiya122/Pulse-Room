@@ -1,41 +1,60 @@
 {
-  "updatedAt": "2026-11-14T12:00:00.000Z",
+  "updatedAt": "2026-11-18T08:36:28.308Z",
+  "source": "Automated Multi-Agency Feed Ingestion (NASA / USGS / NOAA / World Monitor)",
   "articles": [
     {
-      "id": "news-art-1",
-      "topic": "calamities",
-      "headline": "Pacific Tsunami Warning Center: Regional Seismicity Assessment Normal",
-      "source": "USGS / PTWC",
-      "url": "https://earthquake.usgs.gov",
-      "publishedAt": "2026-11-14T11:30:00.000Z",
-      "summary": "Deep seismic networks report baseline dissipation following the offshore Chiba tremor; oceanic sensors register sub-centimeter sea-surface variations."
-    },
-    {
-      "id": "news-art-2",
-      "topic": "wildlife",
-      "headline": "Bioacoustic Tracking Confirms Rebounding Blue Whale Populations in North Atlantic",
-      "source": "Global Marine Ecology",
-      "url": "https://marineecology.org",
-      "publishedAt": "2026-11-14T10:15:00.000Z",
-      "summary": "Hydrophone arrays positioned along the Mid-Atlantic Ridge identify three distinct vocalization clans migrating northward toward feeding grounds."
-    },
-    {
-      "id": "news-art-3",
-      "topic": "sports",
-      "headline": "Global Sailing Circuit: Foiling Monohulls Redefine Speed Thresholds in Trans-Tasman Sprint",
-      "source": "Ocean Racing Weekly",
-      "url": "https://oceanracing.example.com",
-      "publishedAt": "2026-11-14T09:00:00.000Z",
-      "summary": "Skippers capitalize on steady 25-knot trade winds, shaving four hours off the longstanding passage benchmark."
-    },
-    {
-      "id": "news-art-4",
+      "id": "nasa-science-sierra-snow-2026",
       "topic": "news",
-      "headline": "World Monitor Brief: Critical Mineral Supply Chains Rebalance Amid Recycled Output Gains",
+      "headline": "NASA Earth Observatory: Sierra Snowpack Dynamics and Western Water Resources",
+      "source": "NASA Earth Observatory",
+      "url": "https://science.nasa.gov/earth/earth-observatory/sierra-snow-season-spins-up/",
+      "publishedAt": "2026-11-18T08:36:28.308Z",
+      "summary": "High-resolution MODIS satellite imaging assesses early-season alpine snow water equivalents across the Sierra Nevada watershed basins."
+    },
+    {
+      "id": "usgs-seismic-pacific-advisory",
+      "topic": "calamities",
+      "headline": "USGS Seismological Network: Circum-Pacific Subduction Telemetry Overview",
+      "source": "USGS Earthquake Hazards Program",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/",
+      "publishedAt": "2026-11-18T07:36:28.308Z",
+      "summary": "Global seismic stations confirm baseline energy dissipation across the Kuril-Kamchatka and Japan Trench subduction interfaces."
+    },
+    {
+      "id": "noaa-ocean-coral-telemetry",
+      "topic": "wildlife",
+      "headline": "Global Ocean Habitat Census: Deep-Water Sponge & Cold-Coral Reef Corridors Mapped",
+      "source": "NOAA Ocean Exploration / Ocean Networks",
+      "url": "https://oceanexplorer.noaa.gov/",
+      "publishedAt": "2026-11-18T06:36:28.308Z",
+      "summary": "Autonomous deep-submergence vehicles document high-biodiversity cold-water coral gardens along underwater seamount chains."
+    },
+    {
+      "id": "world-monitor-grid-transition",
+      "topic": "news",
+      "headline": "World Monitor Brief: Cross-Border Clean Energy Interconnection Accords Signed",
       "source": "World Monitor Intelligence",
       "url": "https://worldmonitor.app",
-      "publishedAt": "2026-11-14T08:30:00.000Z",
-      "summary": "Secondary processing facilities in North America and Europe contribute record volume to lithium-ion cell feedstock demand."
+      "publishedAt": "2026-11-18T05:36:28.308Z",
+      "summary": "Multilateral grid dispatch operators implement shared renewable balancing protocols to manage inter-regional clean power surpluses."
+    },
+    {
+      "id": "imoca-ocean-regatta-telemetry",
+      "topic": "sports",
+      "headline": "Ocean Racing Tracking: Southern Ocean Foiling Monohulls Set 24-Hour Velocity Mark",
+      "source": "Global Ocean Racing Network",
+      "url": "https://www.imoca.org",
+      "publishedAt": "2026-11-18T04:36:28.308Z",
+      "summary": "Round-the-world solo skippers navigate challenging 35-knot roaring forties conditions with real-time satellite position beacons."
+    },
+    {
+      "id": "cannes-spatial-media-2026",
+      "topic": "entertainment",
+      "headline": "Spatial Media Summit: Volumetric Acoustic Ecosystems and Interactive Soundscapes",
+      "source": "International Immersive Cinema",
+      "url": "https://www.festival-cannes.com",
+      "publishedAt": "2026-11-18T03:36:28.308Z",
+      "summary": "Directors showcase binaural spatial audio and photogrammetric documentary captures from remote ecological frontiers."
     }
   ]
 }

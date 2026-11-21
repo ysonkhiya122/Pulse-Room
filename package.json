@@ -10,7 +10,8 @@
     "preview": "vite preview --host 0.0.0.0 --port 5173",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check-env": "tsx scripts/check-env.ts"
+    "check-env": "tsx scripts/check-env.ts",
+    "fetch-news": "tsx scripts/fetch-news.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { VoiceState } from '@/features/voice/useVoiceSession';
 import { Mic, Square, Radio, Sparkles, Volume2, Clock } from 'lucide-react';
-import { Button } from '@/components/atoms';
+import { Button, InfoTooltip } from '@/components/atoms';
 
 export interface VoiceDockProps {
   agentName?: string;
@@ -31,12 +31,7 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
   const isThinking = state === 'thinking';
 
   return (
-    <div className="w-full glass-panel rounded-panel border border-border/80 p-4 flex flex-col gap-3 relative overflow-hidden">
-      {/* Glow accent when active */}
-      {isSpeaking || isListening ? (
-        <div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-accent/10 blur-[60px] pointer-events-none" />
-      ) : null}
-
+    <div className="w-full glass-card rounded-panel border border-border p-4 flex flex-col gap-3 relative overflow-hidden">
       {/* Top Header Row */}
       <div className="flex items-center justify-between z-10">
         <div className="flex items-center gap-2">
@@ -47,9 +42,15 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-panel-subtle text-accent border border-border capitalize">
             {state}
           </span>
+          <InfoTooltip
+            title="Conversational World Awareness Agent (Nova)"
+            description="Speaks aloud using live planetary telemetry, atmospheric measurements, and general geographical knowledge. Automatically switches between LiveKit WebRTC and native browser speech synthesis."
+            source="Pulse Room Dual-Engine Voice Subsystem"
+            baseline="Target Latency < 600ms | Max Response 20s"
+          />
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-muted font-mono" title="Daily free voice quota">
+        <div className="flex items-center gap-1.5 text-xs text-text-muted font-mono" title="Daily free voice quota">
           <Clock className="w-3.5 h-3.5 text-accent" />
           <span>{minutesRemaining}m free left</span>
         </div>
@@ -57,36 +58,36 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
 
       {/* Center Interactive Orb & Waveforms */}
       <div className="flex flex-col sm:flex-row items-center gap-4 py-2 z-10">
-        {/* Pulsing Orb */}
+        {/* Professional Pulsing Orb */}
         <button
           type="button"
           onClick={onToggle}
-          className={`relative group flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent ${
+          className={`relative group flex items-center justify-center w-14 h-14 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent ${
             isSpeaking
-              ? 'animate-orb-breathe bg-accent/30 border-2 border-accent text-accent'
+              ? 'bg-accent/20 border-2 border-accent text-accent'
               : isListening
               ? 'bg-topic-calamity/20 border-2 border-topic-calamity text-topic-calamity animate-pulse'
               : isThinking
               ? 'bg-topic-sports/20 border-2 border-topic-sports text-topic-sports animate-spin'
-              : 'bg-panel-subtle hover:bg-panel border-2 border-border hover:border-accent text-text'
+              : 'bg-panel-subtle hover:bg-panel border border-border hover:border-accent text-text'
           }`}
-          aria-label={`Voice agent orb. Current state: ${state}. Click to toggle.`}
+          aria-label={`Voice agent orb. Current state: ${state}. Click to toggle listening.`}
         >
           {isSpeaking ? (
-            <Volume2 className="w-7 h-7 text-accent" />
+            <Volume2 className="w-6 h-6 text-accent" />
           ) : isListening ? (
-            <Mic className="w-7 h-7 text-topic-calamity" />
+            <Mic className="w-6 h-6 text-topic-calamity" />
           ) : isThinking ? (
-            <Radio className="w-7 h-7 text-topic-sports" />
+            <Radio className="w-6 h-6 text-topic-sports" />
           ) : (
-            <Mic className="w-7 h-7 text-accent group-hover:scale-110 transition-transform" />
+            <Mic className="w-6 h-6 text-accent group-hover:scale-105 transition-transform" />
           )}
         </button>
 
         {/* Live Audio Visualizer Bars */}
         <div className="flex-1 w-full flex flex-col justify-center">
-          <div className="flex items-center gap-1.5 h-7 px-3 rounded-xl bg-panel-subtle/80 border border-border/60">
-            {[40, 75, 25, 90, 60, 30, 85, 45, 95, 35, 70, 50, 80, 20, 65, 85].map((height, i) => (
+          <div className="flex items-center gap-1.5 h-6 px-3 rounded-lg bg-panel-subtle border border-border/80">
+            {[35, 65, 25, 80, 50, 30, 75, 40, 85, 30, 60, 45, 70, 20, 55, 75].map((height, i) => (
               <span
                 key={i}
                 className={`flex-1 rounded-full transition-all duration-150 ${
@@ -96,7 +97,7 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
                     ? 'bg-topic-calamity'
                     : isThinking
                     ? 'bg-topic-sports'
-                    : 'bg-border'
+                    : 'bg-border/60'
                 }`}
                 style={{
                   height: isSpeaking || isListening ? `${Math.max(15, (height * (Math.sin(Date.now() / 200 + i) + 1.2)) / 2.2)}%` : '20%',
@@ -105,10 +106,10 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
             ))}
           </div>
 
-          {/* Real-time Spoken Answer / Transcript Line (ALWAYS VISIBLE per Section 3 & 9) */}
+          {/* Real-time Spoken Answer / Transcript Line (ALWAYS VISIBLE per Blueprint) */}
           <div className="mt-2 text-xs text-text font-medium leading-relaxed min-h-[36px] flex items-center px-1" aria-live="polite">
             {transcript ? (
-              <span className="text-muted italic mr-1.5">{transcript}</span>
+              <span className="text-text-muted italic mr-1.5">{transcript}</span>
             ) : null}
             <span className="text-text">{lastReply}</span>
           </div>
@@ -130,31 +131,31 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
       </div>
 
       {/* Suggested Prompt Pills */}
-      <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/50 z-10">
-        <span className="text-[11px] text-muted font-medium flex items-center mr-1">
+      <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-border/60 z-10">
+        <span className="text-[11px] text-text-muted font-medium flex items-center mr-1">
           <Sparkles className="w-3 h-3 text-accent mr-1 inline" /> Ask:
         </span>
 
         <button
           type="button"
           onClick={() => onAskPrompt('Give me a 20-second world brief')}
-          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-accent/50 text-text transition-colors"
+          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-border-active text-text transition-colors"
         >
           World Brief
         </button>
 
         <button
           type="button"
-          onClick={() => onAskPrompt('What is the global weather situation?')}
-          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-accent/50 text-text transition-colors"
+          onClick={() => onAskPrompt('What is the global weather and wind situation?')}
+          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-border-active text-text transition-colors"
         >
-          Weather
+          Weather & Wind
         </button>
 
         <button
           type="button"
           onClick={() => onAskPrompt('What are the latest seismic and calamity reports?')}
-          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-accent/50 text-text transition-colors"
+          className="text-[11px] px-2.5 py-1 rounded-chip bg-panel-subtle hover:bg-panel border border-border hover:border-border-active text-text transition-colors"
         >
           Seismic Reports
         </button>
@@ -162,7 +163,7 @@ export const VoiceDock: React.FC<VoiceDockProps> = ({
         {hasSelectedEvent ? (
           <button
             type="button"
-            onClick={() => onAskPrompt('Explain the currently selected event in detail')}
+            onClick={() => onAskPrompt('Explain the currently selected event and its local wind and air quality')}
             className="text-[11px] px-2.5 py-1 rounded-chip bg-accent/15 border border-accent/40 text-accent hover:bg-accent/25 transition-colors font-medium"
           >
             Explain Selected Event

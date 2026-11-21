@@ -79,7 +79,8 @@ pulse-room/
   │   ├── lib/              # HTTP client, sanitizer, time helpers, logger
   │   └── styles/           # tokens.css, globals.css
   ├── firestore.rules       # Production Firestore security rules
-  └── .env.demo             # Committed demo environment (zero secrets)
+  ├── .env.demo             # Committed demo environment (zero secrets)
+  └── UPDATE_LOG.md         # Detailed milestone & Git activity changelog
 ```
 
 ---
@@ -88,5 +89,6 @@ pulse-room/
 
 - [Architecture & Design System](docs/architecture.md)
 - [Operations & Runbook](docs/runbook.md)
+- [Update & Git Activity Log](UPDATE_LOG.md)
 - [ADR 001: Scaffolding and Demo Mode](docs/adr/001-project-scaffolding-and-demo-mode.md)
 - [ADR 002: Atomic and Feature Boundaries](docs/adr/002-atomic-and-feature-sliced-boundaries.md)

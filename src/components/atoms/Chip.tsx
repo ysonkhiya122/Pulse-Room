@@ -18,10 +18,10 @@ export const Chip: React.FC<ChipProps> = ({
     <button
       type="button"
       className={clsx(
-        'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-chip transition-all duration-200 border',
+        'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-chip transition-all duration-150 border select-none',
         active
-          ? 'bg-panel-subtle text-text border-accent/60 shadow-sm'
-          : 'bg-panel/60 text-muted border-border hover:border-border-active hover:text-text',
+          ? 'bg-panel-subtle text-text border-accent/60 shadow-card'
+          : 'bg-panel/70 text-text-muted border-border hover:border-border-active hover:text-text',
         className
       )}
       style={{

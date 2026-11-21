@@ -16,19 +16,19 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed select-none';
 
   const variants = {
-    primary: 'bg-accent text-[#05080F] hover:bg-accent-hover font-semibold shadow-md',
-    accent: 'bg-accent/20 border border-accent/40 text-accent hover:bg-accent/30',
+    primary: 'bg-accent text-[#0A0D14] hover:bg-accent-light font-semibold shadow-card',
+    accent: 'bg-accent/15 border border-accent/40 text-accent hover:bg-accent/25',
     secondary: 'bg-panel-subtle text-text border border-border hover:border-border-active hover:bg-panel',
-    ghost: 'bg-transparent text-muted hover:text-text hover:bg-panel-subtle',
-    danger: 'bg-topic-calamity/20 text-topic-calamity border border-topic-calamity/40 hover:bg-topic-calamity/30',
+    ghost: 'bg-transparent text-text-muted hover:text-text hover:bg-panel-subtle',
+    danger: 'bg-topic-calamity/15 text-topic-calamity border border-topic-calamity/30 hover:bg-topic-calamity/25',
   };
 
   const sizes = {
     sm: 'text-xs px-2.5 py-1.5 rounded-lg min-h-[32px]',
-    md: 'text-sm px-3.5 py-2 rounded-xl min-h-[40px]',
+    md: 'text-sm px-3.5 py-2 rounded-xl min-h-[38px]',
     lg: 'text-base px-5 py-2.5 rounded-xl min-h-[44px]',
   };
 

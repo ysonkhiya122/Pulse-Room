@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { PulseEvent } from '@/features/events/schema';
 import { TOPIC_REGISTRY } from '@/features/news/topics';
 import { RotateCw, ZoomIn, ZoomOut, Compass } from 'lucide-react';
+import { InfoTooltip } from '@/components/atoms/InfoTooltip';
 
 export interface GlobeStageProps {
   events: PulseEvent[];
@@ -101,10 +102,9 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
   }, [events, rotation, tilt, globeRadius, selectedEvent]);
 
   return (
-    <div className="relative w-full h-[440px] lg:h-[480px] flex items-center justify-center select-none overflow-hidden rounded-panel glass-panel border border-border/80">
-      {/* Background Starfield and Radial Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(11,18,32,0.9)_0%,#05080F_100%)] pointer-events-none" />
-      <div className="absolute w-[440px] h-[440px] rounded-full bg-accent/5 blur-[80px] pointer-events-none" />
+    <div className="relative w-full h-[440px] lg:h-[480px] flex items-center justify-center select-none overflow-hidden rounded-panel glass-card border border-border">
+      {/* Background Starfield and Radial Falloff */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#111622_0%,#0A0D14_100%)] pointer-events-none" />
 
       {/* Interactive Projection Canvas */}
       <div
@@ -124,23 +124,23 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
           className="overflow-visible"
         >
           <defs>
-            {/* Globe sphere gradient */}
-            <radialGradient id="globeSphere" cx="40%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#1E2A44" />
-              <stop offset="45%" stopColor="#0B1220" />
-              <stop offset="100%" stopColor="#05080F" />
+            {/* Professional Globe Sphere Gradient */}
+            <radialGradient id="globeSphere" cx="42%" cy="38%" r="62%">
+              <stop offset="0%" stopColor="#1E273A" />
+              <stop offset="50%" stopColor="#121824" />
+              <stop offset="100%" stopColor="#0B0F17" />
             </radialGradient>
 
             {/* Atmosphere glow */}
             <radialGradient id="atmoGlow" cx="50%" cy="50%" r="50%">
               <stop offset="85%" stopColor="transparent" />
-              <stop offset="98%" stopColor="#38E8D0" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#38E8D0" stopOpacity="0" />
+              <stop offset="98%" stopColor="#06B6D4" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#06B6D4" stopOpacity="0" />
             </radialGradient>
 
             {/* Radar beam gradient */}
             <linearGradient id="radarBeam" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#38E8D0" stopOpacity="0.25" />
+              <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.18" />
               <stop offset="100%" stopColor="transparent" />
             </linearGradient>
           </defs>
@@ -149,7 +149,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
           <circle
             cx={center}
             cy={center}
-            r={globeRadius + 8}
+            r={globeRadius + 6}
             fill="url(#atmoGlow)"
             className="pointer-events-none"
           />
@@ -160,8 +160,8 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
             cy={center}
             r={globeRadius}
             fill="url(#globeSphere)"
-            stroke="#1E2A44"
-            strokeWidth="1.5"
+            stroke="#1F2636"
+            strokeWidth="1.25"
           />
 
           {/* Graticule Latitude Lines */}
@@ -177,10 +177,10 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
                 rx={Math.max(0, ringRadiusX)}
                 ry={Math.max(0, Math.abs(ringRadiusY))}
                 fill="none"
-                stroke="#1E2A44"
+                stroke="#242E42"
                 strokeWidth="0.75"
                 strokeDasharray="3 3"
-                opacity="0.4"
+                opacity="0.45"
               />
             );
           })}
@@ -192,13 +192,13 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
             rx={globeRadius}
             ry={globeRadius * Math.sin((tilt * Math.PI) / 180)}
             fill="none"
-            stroke="#2E4168"
+            stroke="#2E3A52"
             strokeWidth="1"
             opacity="0.6"
           />
 
           {/* Rotating Radar Sweep Cone */}
-          <g transform={`rotate(${rotation * 1.5}, ${center}, ${center})`} className="pointer-events-none opacity-40">
+          <g transform={`rotate(${rotation * 1.5}, ${center}, ${center})`} className="pointer-events-none opacity-30">
             <path
               d={`M ${center} ${center} L ${center + globeRadius} ${center} A ${globeRadius} ${globeRadius} 0 0 1 ${center} ${center + globeRadius} Z`}
               fill="url(#radarBeam)"
@@ -230,11 +230,11 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
                 {/* Pulsing ring for high severity or selected */}
                 {(event.severity >= 3 || isSelected) ? (
                   <circle
-                    r={markerSize * 1.8}
+                    r={markerSize * 1.7}
                     fill="none"
                     stroke={topicConfig.color}
-                    strokeWidth="1.5"
-                    className="animate-ping opacity-60"
+                    strokeWidth="1.2"
+                    className="animate-ping opacity-50"
                   />
                 ) : null}
 
@@ -242,13 +242,13 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
                 <circle
                   r={markerSize}
                   fill={topicConfig.color}
-                  stroke={isSelected ? '#FFFFFF' : '#05080F'}
-                  strokeWidth={isSelected ? 2 : 1.5}
+                  stroke={isSelected ? '#FFFFFF' : '#0A0D14'}
+                  strokeWidth={isSelected ? 2 : 1.25}
                   className="transition-transform group-hover:scale-125 duration-150 drop-shadow-md"
                 />
 
-                {/* Severity indicator dot in center */}
-                <circle r={1.5} fill="#05080F" />
+                {/* Center Core Dot */}
+                <circle r={1.5} fill="#0A0D14" />
 
                 {/* Tooltip on hover/select */}
                 {isSelected ? (
@@ -259,14 +259,14 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
                       width="140"
                       height="20"
                       rx="4"
-                      fill="#0B1220"
-                      stroke="#38E8D0"
+                      fill="#111622"
+                      stroke="#06B6D4"
                       strokeWidth="1"
                     />
                     <text
                       x="0"
                       y="-8"
-                      fill="#E6EDF7"
+                      fill="#F1F5F9"
                       fontSize="9"
                       fontWeight="bold"
                       textAnchor="middle"
@@ -283,11 +283,11 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       </div>
 
       {/* Floating Controls HUD */}
-      <div className="absolute bottom-3 right-3 flex items-center gap-1.5 z-20 bg-panel/90 border border-border/80 rounded-xl p-1 backdrop-blur-md">
+      <div className="absolute bottom-3 right-3 flex items-center gap-1 z-20 bg-panel/90 border border-border rounded-xl p-1 backdrop-blur-md shadow-card">
         <button
           type="button"
           onClick={() => setZoom((z) => Math.min(1.4, z + 0.1))}
-          className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-panel-subtle transition-colors"
+          className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-panel-subtle transition-colors"
           title="Zoom In"
           aria-label="Zoom In"
         >
@@ -296,7 +296,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
         <button
           type="button"
           onClick={() => setZoom((z) => Math.max(0.7, z - 0.1))}
-          className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-panel-subtle transition-colors"
+          className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-panel-subtle transition-colors"
           title="Zoom Out"
           aria-label="Zoom Out"
         >
@@ -306,7 +306,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
           type="button"
           onClick={() => setIsAutoRotate((r) => !r)}
           className={`p-1.5 rounded-lg transition-colors ${
-            isAutoRotate ? 'text-accent bg-accent/15' : 'text-muted hover:text-text hover:bg-panel-subtle'
+            isAutoRotate ? 'text-accent bg-accent/15' : 'text-text-muted hover:text-text hover:bg-panel-subtle'
           }`}
           title={isAutoRotate ? 'Pause Rotation' : 'Resume Auto Rotation'}
           aria-label={isAutoRotate ? 'Pause Rotation' : 'Resume Auto Rotation'}
@@ -320,7 +320,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
             setTilt(15);
             setZoom(1.0);
           }}
-          className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-panel-subtle transition-colors"
+          className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-panel-subtle transition-colors"
           title="Reset Orientation"
           aria-label="Reset Orientation"
         >
@@ -330,11 +330,19 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
 
       {/* Top Left Telemetry Overlay */}
       <div className="absolute top-3 left-3 z-20 flex flex-col gap-1 pointer-events-none">
-        <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-text bg-panel/80 border border-border/80 px-2.5 py-1 rounded-lg backdrop-blur-md">
+        <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-text bg-panel/85 border border-border px-2.5 py-1 rounded-lg backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
           <span>Events in View: {events.length}</span>
+          <div className="pointer-events-auto">
+            <InfoTooltip
+              title="3D Globe Telemetry Projection"
+              description="Real-time orthographic sphere mapping verified planetary coordinates. Drag with mouse or swipe on touch screens to inspect any quadrant of the globe."
+              source="USGS · NASA EONET · Open-Meteo"
+              baseline="Orthographic Projection | 15° Default Tilt"
+            />
+          </div>
         </div>
-        <div className="text-[10px] font-mono text-muted/80 ml-1">
+        <div className="text-[10px] font-mono text-text-muted ml-1">
           Window: Last {hoursWindow}h | Projection: Orthographic
         </div>
       </div>

@@ -4,3 +4,4 @@ export * from './Dot';
 export * from './Badge';
 export * from './Skeleton';
 export * from './Slider';
+export * from './InfoTooltip';

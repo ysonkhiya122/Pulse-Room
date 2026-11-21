@@ -8,12 +8,8 @@ export class EonetAdapter implements EventAdapter {
   refetchMs = 360000; // 6 mins (per Blueprint 5-10m)
 
   async fetch(signal: AbortSignal): Promise<PulseEvent[]> {
-    if (env.VITE_DEMO_MODE) {
-      return [];
-    }
-
     try {
-      const url = `${env.VITE_EONET_URL}?status=open&days=2`;
+      const url = `${env.VITE_EONET_URL}?status=open&days=10`;
       const res = await fetchWithTimeout(url, { signal, timeoutMs: 8000 });
 
       if (!res.ok) {
@@ -25,8 +21,9 @@ export class EonetAdapter implements EventAdapter {
 
       for (const item of data.events || []) {
         const category = item.categories?.[0]?.id || 'wildfires';
-        const isStorm = category.includes('storm') || category.includes('cyclone');
-        const kind = isStorm ? 'storm' : 'wildfire';
+        const isStorm = category.toLowerCase().includes('storm') || category.toLowerCase().includes('cyclone');
+        const isVolcano = category.toLowerCase().includes('volcano');
+        const kind = isStorm ? 'storm' : isVolcano ? 'volcano' : 'wildfire';
 
         // Most recent geometry coordinate
         const geom = item.geometry?.[item.geometry.length - 1];
@@ -41,15 +38,16 @@ export class EonetAdapter implements EventAdapter {
           topic: 'calamities',
           kind,
           title: item.title,
-          summary: `NASA EONET category: ${category}. Latest tracking recorded at ${geom.date || 'recent observation'}.`,
+          summary: `NASA EONET classified hazard category: ${item.categories?.[0]?.title || category}. Continuous satellite telemetry observation.`,
           lat,
           lng,
-          severity: isStorm ? 4 : 3,
+          severity: isStorm ? 4 : isVolcano ? 4 : 3,
           time: new Date(geom.date || Date.now()).toISOString(),
-          url: item.link,
+          url: item.link || `https://eonet.gsfc.nasa.gov/api/v3/events/${item.id}`,
         });
       }
 
+      logger.info(`NASA EONET Adapter successfully ingested ${events.length} live natural hazard events.`);
       return events;
     } catch (err) {
       logger.warn('NASA EONET adapter fetch failed; failing soft', { error: String(err) });

@@ -4,56 +4,55 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#05080F',
-        panel: '#0B1220',
-        'panel-subtle': '#0F182B',
-        border: '#1E2A44',
-        'border-active': '#2E4168',
-        text: '#E6EDF7',
-        muted: '#9DB0CF',
+        background: '#0A0D14',
+        panel: {
+          DEFAULT: '#111622',
+          subtle: '#161D2E',
+          hover: '#1C2438',
+        },
+        border: {
+          DEFAULT: '#1F2636',
+          active: '#2E3A52',
+          focus: '#38BDF8',
+        },
+        text: {
+          DEFAULT: '#F1F5F9',
+          secondary: '#CBD5E1',
+          muted: '#94A3B8',
+        },
         accent: {
-          DEFAULT: '#38E8D0',
-          hover: '#2CC2AD',
-          glow: 'rgba(56, 232, 208, 0.25)',
+          DEFAULT: '#06B6D4',
+          light: '#22D3EE',
+          muted: 'rgba(6, 182, 212, 0.12)',
+          border: 'rgba(6, 182, 212, 0.35)',
         },
         topic: {
-          calamity: '#FF6B6B',
-          fire: '#FFB454',
-          storm: '#5BC0FF',
-          wildlife: '#7CE38B',
-          sports: '#A78BFA',
-          news: '#38E8D0',
-          entertainment: '#F472B6',
+          calamity: '#F43F5E',
+          fire: '#F97316',
+          storm: '#38BDF8',
+          wildlife: '#10B981',
+          sports: '#818CF8',
+          news: '#06B6D4',
+          aqi: '#A855F7',
+          entertainment: '#EC4899',
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       borderRadius: {
-        card: '14px',
-        panel: '16px',
+        card: '12px',
+        panel: '14px',
         chip: '9999px',
       },
-      animation: {
-        'pulse-subtle': 'pulseSubtle 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'radar-sweep': 'radarSweep 4s linear infinite',
-        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
-        'orb-breathe': 'orbBreathe 3s ease-in-out infinite',
+      boxShadow: {
+        card: '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2)',
+        elevated: '0 4px 12px 0 rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.2)',
+        popover: '0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4)',
       },
-      keyframes: {
-        pulseSubtle: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.6' },
-        },
-        radarSweep: {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
-        orbBreathe: {
-          '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 20px rgba(56, 232, 208, 0.35)' },
-          '50%': { transform: 'scale(1.06)', boxShadow: '0 0 35px rgba(56, 232, 208, 0.65)' },
-        },
+      animation: {
+        'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
     },
   },

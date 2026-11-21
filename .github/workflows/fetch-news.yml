@@ -1,6 +1,9 @@
 name: Scheduled News Ingestion
 
 on:
+  schedule:
+    # Run every 30 minutes
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:

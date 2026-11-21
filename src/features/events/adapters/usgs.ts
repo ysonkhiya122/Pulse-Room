@@ -8,11 +8,6 @@ export class UsgsAdapter implements EventAdapter {
   refetchMs = 90000; // 90 seconds (per Blueprint 60-120s)
 
   async fetch(signal: AbortSignal): Promise<PulseEvent[]> {
-    if (env.VITE_DEMO_MODE) {
-      // In demo mode, bypass remote fetch to uphold Zero-Network Demo Mode guarantee
-      return [];
-    }
-
     try {
       const res = await fetchWithTimeout(env.VITE_USGS_URL, {
         signal,
@@ -47,15 +42,16 @@ export class UsgsAdapter implements EventAdapter {
           topic: 'calamities',
           kind: 'earthquake',
           title: feature.properties?.title || `M ${mag} Earthquake`,
-          summary: `Magnitude ${mag} detected at depth of ${coords[2] ?? 10} km. USGS Status: ${feature.properties?.status || 'reviewed'}.`,
+          summary: `Magnitude ${mag} detected at depth of ${coords[2] ?? 10} km. USGS Seismological Status: ${feature.properties?.status || 'reviewed'}.`,
           lat,
           lng,
           severity,
           time: new Date(feature.properties?.time || Date.now()).toISOString(),
-          url: feature.properties?.url,
+          url: feature.properties?.url || `https://earthquake.usgs.gov/earthquakes/eventpage/${feature.id}`,
         });
       }
 
+      logger.info(`USGS Adapter successfully ingested ${events.length} live seismic events.`);
       return events;
     } catch (err) {
       logger.warn('USGS adapter fetch failed; failing soft to fallback', { error: String(err) });
