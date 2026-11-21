@@ -41,3 +41,10 @@ out/
 .temp/
 uploads/
 info/
+
+# Internal notes - never publish
+UPDATE_LOG.md
+docs/UPDATE_LOG.md
+docs/github-setup.md
+.env.production
+.env.development
