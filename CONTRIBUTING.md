@@ -12,4 +12,4 @@ Before opening a pull request, verify that:
 - [ ] `npm run check-env` passes (no server secrets prefixed with `VITE_`).
 - [ ] The app runs cleanly in **Demo Mode** with zero network calls and zero keys.
 - [ ] Every new component adheres to WCAG 2.2 AA accessibility standards.
-- [ ] Documentation and `UPDATE_LOG.md` are updated with the changes made.
+- [ ] Documentation is updated with the changes made.
