@@ -10,9 +10,20 @@ export const EventTopicSchema = z.enum([
 
 export type EventTopic = z.infer<typeof EventTopicSchema>;
 
+export const EventSourceSchema = z.enum([
+  'usgs',
+  'eonet',
+  'news',
+  'wm',
+  'gbif',
+  'noaa',
+]);
+
+export type EventSource = z.infer<typeof EventSourceSchema>;
+
 export const EventSchema = z.object({
   id: z.string(),
-  source: z.enum(['usgs', 'eonet', 'news', 'wm']),
+  source: EventSourceSchema,
   topic: EventTopicSchema,
   kind: z.string(),
   title: z.string().max(200),

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { EventSchema } from './schema';
 
 describe('EventSchema (Appendix A)', () => {
-  it('validates a compliant PulseEvent object', () => {
+  it('validates a compliant PulseEvent object with usgs source', () => {
     const validData = {
       id: 'usgs-event-1',
       source: 'usgs',
@@ -18,6 +18,25 @@ describe('EventSchema (Appendix A)', () => {
     };
 
     const result = EventSchema.safeParse(validData);
+    expect(result.success).toBe(true);
+  });
+
+  it('validates a compliant PulseEvent with live GBIF scientific wildlife source', () => {
+    const gbifData = {
+      id: 'gbif-occurrence-4829',
+      source: 'gbif',
+      topic: 'wildlife',
+      kind: 'biodiversity',
+      title: 'Scientific Observation: Megaptera novaeangliae (Humpback Whale)',
+      summary: 'Ocean bio-census observation logged by Marine Bio Acoustics Laboratory.',
+      lat: -22.5,
+      lng: 166.4,
+      severity: 2,
+      time: '2026-11-18T06:00:00.000Z',
+      url: 'https://www.gbif.org/occurrence/4829',
+    };
+
+    const result = EventSchema.safeParse(gbifData);
     expect(result.success).toBe(true);
   });
 
