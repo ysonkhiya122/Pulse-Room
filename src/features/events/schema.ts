@@ -13,10 +13,11 @@ export type EventTopic = z.infer<typeof EventTopicSchema>;
 export const EventSourceSchema = z.enum([
   'usgs',
   'eonet',
-  'news',
-  'wm',
+  'gdacs',
   'gbif',
   'noaa',
+  'news',
+  'wm',
 ]);
 
 export type EventSource = z.infer<typeof EventSourceSchema>;
