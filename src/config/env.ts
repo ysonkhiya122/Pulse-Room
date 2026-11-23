@@ -3,14 +3,14 @@ import { z } from 'zod';
 const EnvSchema = z.object({
   VITE_APP_NAME: z.string().default('Pulse Room'),
   VITE_APP_ENV: z.enum(['demo', 'development', 'staging', 'production']).default('demo'),
-  VITE_DEMO_MODE: z.string().transform((v) => v === 'true').prefault('true'),
+  VITE_DEMO_MODE: z.string().transform((v) => v === 'true').default('true'),
   VITE_DEFAULT_AGENT_NAME: z.string().default('Nova'),
 
   // Feature flags
-  VITE_FEATURE_LIVEKIT_VOICE: z.string().transform((v) => v === 'true').prefault('false'),
-  VITE_FEATURE_BROWSER_VOICE: z.string().transform((v) => v === 'true').prefault('true'),
-  VITE_FEATURE_WM_BRIEF: z.string().transform((v) => v === 'true').prefault('true'),
-  VITE_FEATURE_NEWS: z.string().transform((v) => v === 'true').prefault('true'),
+  VITE_FEATURE_LIVEKIT_VOICE: z.string().transform((v) => v === 'true').default('false'),
+  VITE_FEATURE_BROWSER_VOICE: z.string().transform((v) => v === 'true').default('true'),
+  VITE_FEATURE_WM_BRIEF: z.string().transform((v) => v === 'true').default('true'),
+  VITE_FEATURE_NEWS: z.string().transform((v) => v === 'true').default('true'),
 
   // Public Endpoints
   VITE_USGS_URL: z.string().url().default('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson'),
