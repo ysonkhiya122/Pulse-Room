@@ -3,7 +3,7 @@ import { PulseEvent } from '@/features/events/schema';
 import { TOPIC_REGISTRY } from '@/features/news/topics';
 import { RotateCw, ZoomIn, ZoomOut, Compass, MousePointer } from 'lucide-react';
 import { InfoTooltip } from '@/components/atoms/InfoTooltip';
-import { geoOrthographic, geoPath, geoGraticule10 } from 'd3-geo';
+import { geoOrthographic, geoPath, geoGraticule10, geoDistance } from 'd3-geo';
 import * as topojson from 'topojson-client';
 import worldAtlasData from 'world-atlas/land-110m.json';
 
@@ -29,6 +29,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
   const [isAutoRotate, setIsAutoRotate] = useState<boolean>(true);
   const [isMouseSteer, setIsMouseSteer] = useState<boolean>(true);
   const [hoveredEvent, setHoveredEvent] = useState<PulseEvent | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(0);
 
   // Interaction refs
   const isDraggingRef = useRef<boolean>(false);
@@ -70,24 +71,24 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       const dy = e.clientY - lastMousePosRef.current.y;
       lastMousePosRef.current = { x: e.clientX, y: e.clientY };
 
-      setYaw((prev) => (prev + dx * 0.5) % 360);
-      setPitch((prev) => Math.max(-65, Math.min(65, prev - dy * 0.5)));
+      setYaw((prev) => (prev + dx * 0.4) % 360);
+      setPitch((prev) => Math.max(-65, Math.min(65, prev - dy * 0.4)));
       return;
     }
 
-    // Mouse direction steering calculation
+    // Mouse direction steering calculation (gentle & stabilized)
     isHoveringRef.current = true;
     const relX = (e.clientX - cx) / (rect.width / 2); // -1 (left) to +1 (right)
     const relY = (e.clientY - cy) / (rect.height / 2); // -1 (top) to +1 (bottom)
 
-    // Dead zone in center for stability
-    const deadZone = 0.15;
-    const vx = Math.abs(relX) > deadZone ? Math.sign(relX) * Math.pow(Math.abs(relX) - deadZone, 1.2) : 0;
-    const vy = Math.abs(relY) > deadZone ? Math.sign(relY) * Math.pow(Math.abs(relY) - deadZone, 1.2) : 0;
+    // Dead zone in center for calm viewing
+    const deadZone = 0.22;
+    const vx = Math.abs(relX) > deadZone ? Math.sign(relX) * Math.pow(Math.abs(relX) - deadZone, 1.25) : 0;
+    const vy = Math.abs(relY) > deadZone ? Math.sign(relY) * Math.pow(Math.abs(relY) - deadZone, 1.25) : 0;
 
     hoverSteerRef.current = { vx, vy };
 
-    // Marker hover hit-test
+    // Marker hover hit-test ONLY for points on the visible front hemisphere
     const mouseCanvasX = (e.clientX - rect.left) * (canvas.width / rect.width);
     const mouseCanvasY = (e.clientY - rect.top) * (canvas.height / rect.height);
 
@@ -99,10 +100,14 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
 
     let foundMarker: PulseEvent | null = null;
     for (const event of events) {
+      // Must be on the front hemisphere facing user
+      const distFromCenter = geoDistance([yaw, pitch], [event.lng, event.lat]);
+      if (distFromCenter > 1.54) continue; // Behind sphere horizon!
+
       const coords = projection([event.lng, event.lat]);
       if (coords) {
         const dist = Math.hypot(coords[0] - mouseCanvasX, coords[1] - mouseCanvasY);
-        if (dist <= Math.max(10, event.severity * 3.5 + 4)) {
+        if (dist <= Math.max(10, event.severity * 3.2 + 4)) {
           foundMarker = event;
           break;
         }
@@ -136,10 +141,14 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       .clipAngle(90);
 
     for (const event of events) {
+      // Must be on front hemisphere
+      const distFromCenter = geoDistance([yaw, pitch], [event.lng, event.lat]);
+      if (distFromCenter > 1.54) continue;
+
       const coords = projection([event.lng, event.lat]);
       if (coords) {
         const dist = Math.hypot(coords[0] - mouseCanvasX, coords[1] - mouseCanvasY);
-        if (dist <= Math.max(12, event.severity * 3.5 + 4)) {
+        if (dist <= Math.max(12, event.severity * 3.2 + 4)) {
           onSelectEvent(event);
           return;
         }
@@ -150,7 +159,6 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
   // Center on selected event if specified
   useEffect(() => {
     if (selectedEvent) {
-      // Smoothly orient toward selected event
       setYaw(selectedEvent.lng);
       setPitch(Math.max(-50, Math.min(50, selectedEvent.lat)));
     }
@@ -167,19 +175,19 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
     let localPitch = pitch;
 
     const render = () => {
-      radarAngleRef.current = (radarAngleRef.current + 0.02) % (Math.PI * 2);
+      radarAngleRef.current = (radarAngleRef.current + 0.015) % (Math.PI * 2);
 
-      // Handle hover steering vs slow planetary drift
+      // Handle hover steering vs slow, calm planetary drift
       if (!isDraggingRef.current) {
         if (isMouseSteer && isHoveringRef.current && (Math.abs(hoverSteerRef.current.vx) > 0 || Math.abs(hoverSteerRef.current.vy) > 0)) {
-          // Steer in the direction of the hovered mouse
-          localYaw = (localYaw + hoverSteerRef.current.vx * 0.4) % 360;
-          localPitch = Math.max(-65, Math.min(65, localPitch - hoverSteerRef.current.vy * 0.25));
+          // Gentle mouse steering: moving right rotates east, moving left rotates west
+          localYaw = (localYaw + hoverSteerRef.current.vx * 0.12) % 360;
+          localPitch = Math.max(-65, Math.min(65, localPitch - hoverSteerRef.current.vy * 0.08));
           setYaw(localYaw);
           setPitch(localPitch);
         } else if (isAutoRotate) {
-          // Slow, majestic planetary drift (0.07 deg per tick)
-          localYaw = (localYaw + 0.07) % 360;
+          // Extra slow, majestic planetary drift (0.018 deg per frame = ~1 deg/sec)
+          localYaw = (localYaw + 0.018) % 360;
           setYaw(localYaw);
         }
       }
@@ -192,8 +200,8 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       // 1. Atmosphere Radial Glow Ring
       const atmoGrad = ctx.createRadialGradient(center, center, radius * 0.85, center, center, radius * 1.12);
       atmoGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-      atmoGrad.addColorStop(0.88, 'rgba(6, 182, 212, 0.12)');
-      atmoGrad.addColorStop(0.96, 'rgba(6, 182, 212, 0.28)');
+      atmoGrad.addColorStop(0.88, 'rgba(6, 182, 212, 0.1)');
+      atmoGrad.addColorStop(0.96, 'rgba(6, 182, 212, 0.24)');
       atmoGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
 
       ctx.beginPath();
@@ -250,7 +258,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       ctx.translate(center, center);
       ctx.rotate(radarAngleRef.current);
       const beamGrad = ctx.createLinearGradient(0, 0, radius, radius * 0.6);
-      beamGrad.addColorStop(0, 'rgba(6, 182, 212, 0.18)');
+      beamGrad.addColorStop(0, 'rgba(6, 182, 212, 0.14)');
       beamGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -262,26 +270,44 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
 
       ctx.restore(); // End sphere clipping
 
-      // 7. Render Event Markers onto Front Face
-      for (const event of events) {
-        const coords = projection([event.lng, event.lat]);
-        if (!coords) continue; // Behind sphere horizon
+      // 7. Render Event Markers ONLY FOR VISIBLE FRONT HEMISPHERE
+      // Filter strictly by great circle distance from center of view
+      const visibleEvents: { event: PulseEvent; px: number; py: number; dist: number }[] = [];
 
-        const [px, py] = coords;
+      for (const event of events) {
+        const distRad = geoDistance([localYaw, localPitch], [event.lng, event.lat]);
+        if (distRad > 1.54) continue; // Behind the globe! Skip completely!
+
+        const coords = projection([event.lng, event.lat]);
+        if (coords) {
+          visibleEvents.push({ event, px: coords[0], py: coords[1], dist: distRad });
+        }
+      }
+
+      // Sort by severity descending so high-severity events render cleanly on top
+      visibleEvents.sort((a, b) => a.event.severity - b.event.severity);
+
+      // Render visible markers with horizon edge fading
+      for (const item of visibleEvents) {
+        const { event, px, py, dist } = item;
         const topicConfig = TOPIC_REGISTRY[event.topic];
         const isSelected = selectedEvent?.id === event.id;
         const isHovered = hoveredEvent?.id === event.id;
-        const markerRadius = Math.max(4, event.severity * 2.2);
+        const markerRadius = Math.max(3.5, event.severity * 2.1);
+
+        // Smooth opacity fade near globe horizon rim (dist between 1.35 and 1.54 rad)
+        const edgeAlpha = dist < 1.35 ? 1.0 : Math.max(0.1, (1.54 - dist) / 0.19);
+        ctx.globalAlpha = edgeAlpha;
 
         // Outer pulsing ring for high severity (>=3) or selected/hovered events
         if (event.severity >= 3 || isSelected || isHovered) {
           ctx.beginPath();
-          ctx.arc(px, py, markerRadius * (1.6 + Math.sin(Date.now() / 250) * 0.2), 0, Math.PI * 2);
+          ctx.arc(px, py, markerRadius * (1.6 + Math.sin(Date.now() / 250) * 0.18), 0, Math.PI * 2);
           ctx.strokeStyle = isSelected ? '#FFFFFF' : topicConfig.color;
           ctx.lineWidth = 1.25;
-          ctx.globalAlpha = 0.65;
+          ctx.globalAlpha = edgeAlpha * 0.65;
           ctx.stroke();
-          ctx.globalAlpha = 1.0;
+          ctx.globalAlpha = edgeAlpha;
         }
 
         // Inner solid marker dot
@@ -295,18 +321,22 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
 
         // Center dark pin core
         ctx.beginPath();
-        ctx.arc(px, py, 1.25, 0, Math.PI * 2);
+        ctx.arc(px, py, 1.2, 0, Math.PI * 2);
         ctx.fillStyle = '#0A0D14';
         ctx.fill();
+
+        ctx.globalAlpha = 1.0;
       }
 
-      // 8. Render Floating Tooltip for Hovered/Selected Event
-      const activeEvent = hoveredEvent || (selectedEvent && projection([selectedEvent.lng, selectedEvent.lat]) ? selectedEvent : null);
+      setVisibleCount(visibleEvents.length);
+
+      // 8. Render Floating Tooltip for Hovered/Selected Event (if visible on front)
+      const activeEvent = hoveredEvent || (selectedEvent && geoDistance([localYaw, localPitch], [selectedEvent.lng, selectedEvent.lat]) <= 1.54 ? selectedEvent : null);
       if (activeEvent) {
         const coords = projection([activeEvent.lng, activeEvent.lat]);
         if (coords) {
           const [tx, ty] = coords;
-          const label = activeEvent.title.length > 30 ? activeEvent.title.substring(0, 28) + '...' : activeEvent.title;
+          const label = activeEvent.title.length > 32 ? activeEvent.title.substring(0, 30) + '...' : activeEvent.title;
           ctx.font = '600 10px Inter, system-ui, sans-serif';
           const textMetrics = ctx.measureText(label);
           const boxWidth = textMetrics.width + 16;
@@ -356,7 +386,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
           onMouseLeave={handleMouseLeave}
           onClick={handleClick}
           className="cursor-grab active:cursor-grabbing max-w-full max-h-[440px] touch-none"
-          aria-label="Interactive 3D Earth Globe with geographical continents, coastlines, and live telemetry markers"
+          aria-label="Interactive 3D Earth Globe with front-facing visible telemetry markers and calm drift"
           role="img"
         />
       </div>
@@ -387,7 +417,7 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
           className={`p-1.5 rounded-lg transition-colors ${
             isMouseSteer ? 'text-accent bg-accent/15' : 'text-text-muted hover:text-text hover:bg-panel-subtle'
           }`}
-          title={isMouseSteer ? 'Mouse-Steer Active (Move mouse across globe to rotate)' : 'Enable Mouse-Steer'}
+          title={isMouseSteer ? 'Mouse-Steer Active (Move mouse across globe to rotate gently)' : 'Enable Mouse-Steer'}
           aria-label={isMouseSteer ? 'Mouse-Steer Active' : 'Enable Mouse-Steer'}
         >
           <MousePointer className="w-3.5 h-3.5" />
@@ -422,20 +452,20 @@ export const GlobeStage: React.FC<GlobeStageProps> = ({
       <div className="absolute top-3 left-3 z-20 flex flex-col gap-1 pointer-events-none">
         <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-text bg-panel/85 border border-border px-2.5 py-1 rounded-lg backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <span>Continents & Live Pins: {events.length}</span>
+          <span>Visible on Hemisphere: {visibleCount}</span>
           <div className="pointer-events-auto">
             <InfoTooltip
-              title="Geographical Earth Globe & Mouse Steering"
-              description="Renders Natural Earth geographical continents, coastlines, and graticule coordinates. Hover and move your mouse across the globe to dynamically steer its rotation, or drag with your mouse for direct 3D orientation."
-              source="Natural Earth 110m · d3-geo Orthographic Projection"
-              baseline="Real Continental Geography | Hover Steering Active"
+              title="Front-Facing Hemispheric Clipping"
+              description="Only events on the visible side of Earth are displayed. Back-facing markers are strictly culled to eliminate visual clustering. Rotation speed is calibrated to a slow, calm planetary drift (1°/sec)."
+              source="Spherical Horizon Culling · d3-geo Orthographic"
+              baseline="Front Hemisphere Only | Back Face Culled"
             />
           </div>
         </div>
         <div className="text-[10px] font-mono text-text-muted ml-1 flex items-center gap-2">
           <span>Window: Last {hoursWindow}h</span>
           <span>·</span>
-          <span>Hover-Steer: {isMouseSteer ? 'On' : 'Off'}</span>
+          <span>Speed: Calm Drift (1°/s)</span>
         </div>
       </div>
     </div>

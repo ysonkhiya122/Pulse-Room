@@ -38,7 +38,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 {appName}
               </span>
               <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-panel-subtle text-text-muted border border-border">
-                v0.3.0
+                v0.4.0
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-[10px] text-text-muted">
