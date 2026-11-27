@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-18T08:36:28.308Z",
-  "source": "Automated Multi-Agency Feed Ingestion (NASA / USGS / NOAA / World Monitor)",
+  "updatedAt": "2026-11-18T09:20:00.000Z",
+  "source": "Automated Multi-Agency Feed Ingestion (NASA / USGS / NOAA / Copernicus / GBIF / IMOCA)",
   "articles": [
     {
       "id": "nasa-science-sierra-snow-2026",
@@ -8,8 +8,17 @@
       "headline": "NASA Earth Observatory: Sierra Snowpack Dynamics and Western Water Resources",
       "source": "NASA Earth Observatory",
       "url": "https://science.nasa.gov/earth/earth-observatory/sierra-snow-season-spins-up/",
-      "publishedAt": "2026-11-18T08:36:28.308Z",
+      "publishedAt": "2026-11-18T08:36:28.000Z",
       "summary": "High-resolution MODIS satellite imaging assesses early-season alpine snow water equivalents across the Sierra Nevada watershed basins."
+    },
+    {
+      "id": "copernicus-climate-global-dispatch",
+      "topic": "news",
+      "headline": "Copernicus Climate Change Service: Global Surface Temperature and Sea Ice Surface Analysis",
+      "source": "Copernicus ECMWF",
+      "url": "https://climate.copernicus.eu",
+      "publishedAt": "2026-11-18T07:45:00.000Z",
+      "summary": "ECMWF ERA5 reanalysis monitors global surface air temperatures, polar sea-ice extents, and atmospheric water vapor anomalies."
     },
     {
       "id": "usgs-seismic-pacific-advisory",
@@ -17,44 +26,53 @@
       "headline": "USGS Seismological Network: Circum-Pacific Subduction Telemetry Overview",
       "source": "USGS Earthquake Hazards Program",
       "url": "https://earthquake.usgs.gov/earthquakes/feed/",
-      "publishedAt": "2026-11-18T07:36:28.308Z",
+      "publishedAt": "2026-11-18T07:36:28.000Z",
       "summary": "Global seismic stations confirm baseline energy dissipation across the Kuril-Kamchatka and Japan Trench subduction interfaces."
     },
     {
       "id": "noaa-ocean-coral-telemetry",
       "topic": "wildlife",
-      "headline": "Global Ocean Habitat Census: Deep-Water Sponge & Cold-Coral Reef Corridors Mapped",
+      "headline": "NOAA Ocean Exploration: Deep-Water Sponge & Cold-Coral Reef Corridors Mapped",
       "source": "NOAA Ocean Exploration / Ocean Networks",
       "url": "https://oceanexplorer.noaa.gov/",
-      "publishedAt": "2026-11-18T06:36:28.308Z",
-      "summary": "Autonomous deep-submergence vehicles document high-biodiversity cold-water coral gardens along underwater seamount chains."
-    },
-    {
-      "id": "world-monitor-grid-transition",
-      "topic": "news",
-      "headline": "World Monitor Brief: Cross-Border Clean Energy Interconnection Accords Signed",
-      "source": "World Monitor Intelligence",
-      "url": "https://worldmonitor.app",
-      "publishedAt": "2026-11-18T05:36:28.308Z",
-      "summary": "Multilateral grid dispatch operators implement shared renewable balancing protocols to manage inter-regional clean power surpluses."
+      "publishedAt": "2026-11-18T06:36:28.000Z",
+      "summary": "Autonomous deep-submergence vehicles document high-biodiversity cold-water coral gardens along Galápagos seamount chains."
     },
     {
       "id": "imoca-ocean-regatta-telemetry",
       "topic": "sports",
-      "headline": "Ocean Racing Tracking: Southern Ocean Foiling Monohulls Set 24-Hour Velocity Mark",
-      "source": "Global Ocean Racing Network",
+      "headline": "Ocean Racing Telemetry: Southern Ocean Foiling Monohulls Set 24-Hour Velocity Mark",
+      "source": "IMOCA Globe Series",
       "url": "https://www.imoca.org",
-      "publishedAt": "2026-11-18T04:36:28.308Z",
+      "publishedAt": "2026-11-18T05:20:00.000Z",
       "summary": "Round-the-world solo skippers navigate challenging 35-knot roaring forties conditions with real-time satellite position beacons."
+    },
+    {
+      "id": "utmb-alpine-skyrunning-telemetry",
+      "topic": "sports",
+      "headline": "Mont-Blanc Alpine Trail Tracking: High-Altitude Atmospheric Sensors Log Ridge Winds",
+      "source": "UTMB Alpine Endurance Network",
+      "url": "https://utmb.world",
+      "publishedAt": "2026-11-18T04:50:00.000Z",
+      "summary": "Continuous weather beacon telemetry at Col de la Seigne monitors gust thresholds and sub-zero wind-chill transitions across alpine cols."
     },
     {
       "id": "cannes-spatial-media-2026",
       "topic": "entertainment",
       "headline": "Spatial Media Summit: Volumetric Acoustic Ecosystems and Interactive Soundscapes",
-      "source": "International Immersive Cinema",
+      "source": "Festival de Cannes Immersive",
       "url": "https://www.festival-cannes.com",
-      "publishedAt": "2026-11-18T03:36:28.308Z",
+      "publishedAt": "2026-11-18T03:36:28.000Z",
       "summary": "Directors showcase binaural spatial audio and photogrammetric documentary captures from remote ecological frontiers."
+    },
+    {
+      "id": "ars-electronica-deep-space-8k",
+      "topic": "entertainment",
+      "headline": "Ars Electronica Deep Space 8K: Real-Time Planetary Data Visualization Showcase",
+      "source": "Ars Electronica Futurelab",
+      "url": "https://ars.electronica.art",
+      "publishedAt": "2026-11-18T02:15:00.000Z",
+      "summary": "Digital artists and data scientists project high-resolution atmospheric turbulence and solar wind fields onto immersive volumetric canvases."
     }
   ]
 }
